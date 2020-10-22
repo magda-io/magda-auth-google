@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An Openfass Serverless Function template for Magda",
   "repository": "https://github.com/magda-io/magda-auth-google.git",
-  "author": "Jacky Jiang <t83714@gmail.com>",
+  "author": "Jacky Jiang <jacky.jiang@data61.csiro.au>",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {

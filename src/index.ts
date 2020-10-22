@@ -33,7 +33,7 @@ const argv = yargs
         type: "number",
         default: 5432
     })
-    .option("authorizationApi", {
+    .option("authApiUrl", {
         describe: "The base URL of the authorization API.",
         type: "string",
         default: "http://localhost:6104/v0"
@@ -81,6 +81,18 @@ const argv = yargs
 // Create a new Express application.
 const app = express();
 
+/** 
+ * K8s liveness probe
+*/
+app.get("/healthz", (req, res) => res.send("OK"));
+
+/** 
+ * K8s readiness probe
+ * At the moment, its functionality is same as /healthz. 
+ * We should make it at least check key resource is ready e.g. session db is accessible
+*/
+app.get("/readiness", (req, res) => res.send("OK"));
+
 /**
  * a 36x36 size icon to be shown on frontend login page
  */
@@ -120,7 +132,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const authApiClient = new AuthApiClient(
-    argv.authorizationApi,
+    argv.authApiUrl,
     argv.jwtSecret,
     argv.userId
 );

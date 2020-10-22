@@ -1,0 +1,45 @@
+global:
+  image: {}
+  rollingUpdate: {}
+  authPluginRedirectUrl: "/sign-in-redirect"
+
+# -- the redirection url after the whole authentication process is completed.
+# Authentication Plugins will use this value as default.
+# The following query paramaters can be used to supply the authentication result:
+# <ul>
+# <li>result: (string) Compulsory. Possible value: "success" or "failure". </li>
+# <li>errorMessage: (string) Optional. Text message to provide more information on the error to the user. </li>
+# </ul>
+# This field is for overriding the value set by global.authPluginRedirectUrl for this auth plugin
+authPluginRedirectUrl:
+
+# image setting loadding order: (from higher priority to lower priority)
+# - Values.image.x
+# - Values.global.minions.image.x
+# - Values.global.image.x
+# - Values.defaultImage.x
+# You can set `imagePullSecret` value to `false` (bool) to reset the value (see example below)
+
+image: 
+  name: "magda-auth-google"
+  # repository: 
+  # tag: 
+  # pullPolicy: 
+  # imagePullSecret: 
+
+defaultImage:
+  repository: docker.io/data61
+  pullPolicy: IfNotPresent
+  imagePullSecret: false
+
+# -- no. of initial replicas
+replicas: 1
+
+defaultAdminUserId: "00000000-0000-4000-8000-000000000000"
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 30Mi
+  limits:
+    cpu: 50m
