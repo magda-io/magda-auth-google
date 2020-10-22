@@ -7,6 +7,7 @@ googleClientId:
 global:
   image: {}
   rollingUpdate: {}
+  externalUrl: ""
   authPluginRedirectUrl: "/sign-in-redirect"
 
 # -- the redirection url after the whole authentication process is completed.
