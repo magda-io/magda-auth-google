@@ -1,0 +1,55 @@
+{
+  "name": "magda-auth-google",
+  "version": "1.0.0",
+  "description": "An Openfass Serverless Function template for Magda",
+  "repository": "https://github.com/magda-io/magda-auth-google.git",
+  "author": "Jacky Jiang <t83714@gmail.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "prebuild": "rimraf dist tsconfig.tsbuildinfo",
+    "build": "tsc -b",
+    "watch": "tsc -b --watch",
+    "start": "node dist/index.js",
+    "test": "mocha --require ts-node/register \"src/test/**/*.spec.ts\"",
+    "docker-build-local": "create-docker-context-for-node-component --build --push --tag auto --local",
+    "docker-build-prod": "create-docker-context-for-node-component --build --push --tag auto",
+    "helm-lint": "helm lint deploy/magda-magda-auth-google -f deploy/test-deploy.yaml",
+    "deploy-local": "helm template deploy/magda-auth-google -f deploy/minikube-dev.yaml | kubectl apply -f -",
+    "retag-and-push": "retag-and-push"
+  },
+  "devDependencies": {
+    "@magda/scripts": "^0.0.57",
+    "@types/connect-pg-simple": "^4.2.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.0.37",
+    "@types/passport": "1.0.3",
+    "@types/pg": "^7.14.5",
+    "@types/urijs": "^1.19.12",
+    "@types/yargs": "^15.0.9"
+  },
+  "dependencies": {
+    "@magda/auth-api-client": "^0.0.58-alpha.0",
+    "@magda/typescript-common": "^0.0.58-rc.3",
+    "connect-pg-simple": "^6.2.1",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.15.4",
+    "express-session": "^1.17.1",
+    "passport": "0.2.2",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.4.1",
+    "urijs": "^1.19.2",
+    "yargs": "^16.1.0"
+  },
+  "config": {
+    "docker": {
+      "name": "data61/magda-auth-google",
+      "include": "node_modules dist Dockerfile package.json"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
