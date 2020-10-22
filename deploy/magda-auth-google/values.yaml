@@ -27,6 +27,13 @@ authPluginRedirectUrl:
 # - Values.defaultImage.x
 # You can set `imagePullSecret` value to `false` (bool) to reset the value (see example below)
 
+autoscaler:
+  # -- turn on the autoscaler or not
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
 image: 
   # -- default docker image name
   name: "magda-auth-google"

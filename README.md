@@ -19,6 +19,10 @@ Kubernetes: `>= 1.14.0-0`
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | authPluginRedirectUrl | string | `nil` | the redirection url after the whole authentication process is completed. Authentication Plugins will use this value as default. The following query paramaters can be used to supply the authentication result: <ul> <li>result: (string) Compulsory. Possible value: "success" or "failure". </li> <li>errorMessage: (string) Optional. Text message to provide more information on the error to the user. </li> </ul> This field is for overriding the value set by `global.authPluginRedirectUrl`. Unless you want to have a different value only for this auth plugin, you shouldn't set this value. |
+| autoscaler.enabled | bool | `false` | turn on the autoscaler or not |
+| autoscaler.maxReplicas | int | `3` |  |
+| autoscaler.minReplicas | int | `1` |  |
+| autoscaler.targetCPUUtilizationPercentage | int | `80` |  |
 | defaultAdminUserId | string | `"00000000-0000-4000-8000-000000000000"` | which system account we used to talk to auth api The value of this field will only be used when `global.defaultAdminUserId` has no value |
 | defaultImage.imagePullSecret | bool | `false` |  |
 | defaultImage.pullPolicy | string | `"IfNotPresent"` |  |
