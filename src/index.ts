@@ -1,7 +1,7 @@
 import express from "express";
 import yargs from "yargs";
 import google from "./google";
-import { AuthApiClient } from "@magda/auth-api-client";
+import AuthApiClient from "@magda/auth-api-client";
 import { createMagdaSessionRouter, AuthPluginConfig } from "./auth-plugin-sdk";
 
 const argv = yargs

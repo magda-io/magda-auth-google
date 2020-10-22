@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express";
 import session from "express-session";
 import urijs from "urijs";
 import createPool, { PoolCreationOptions } from "./createPool";
+import AuthApiClient, { User, UserToken, Maybe } from "@magda/auth-api-client";
+import passport from "passport";
 
 export type MagdaSessionRouterOptions = {
     sessionSecret: string;
@@ -145,4 +147,44 @@ export function redirectOnError(
         .setSearch("result", "failure")
         .setSearch("errorMessage", err);
     res.redirect(source.toString());
+}
+
+export function createOrGetUserToken(
+    authApi: AuthApiClient,
+    profile: passport.Profile,
+    source: string
+): Promise<UserToken> {
+    return authApi.lookupUser(source, profile.id).then((maybe: Maybe<User>) =>
+        maybe.caseOf({
+            just: (user: User) => Promise.resolve(userToUserToken(user)),
+            nothing: () =>
+                authApi
+                    .createUser(profileToUser(profile, source))
+                    .then(userToUserToken)
+        })
+    );
+}
+
+function profileToUser(profile: passport.Profile, source: string): User {
+    if (!profile.emails || profile.emails.length === 0) {
+        throw new Error("User with no email address");
+    }
+
+    return {
+        displayName: profile.displayName,
+        email: profile.emails[0].value,
+        photoURL:
+            profile.photos && profile.photos.length > 0
+                ? profile.photos[0].value
+                : undefined,
+        source: source,
+        sourceId: profile.id,
+        isAdmin: false
+    };
+}
+
+function userToUserToken(user: User): UserToken {
+    return {
+        id: <string>user.id
+    };
 }

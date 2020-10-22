@@ -1,9 +1,9 @@
 import express from "express";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Authenticator, Profile } from "passport";
-import { AuthApiClient as ApiClient } from "@magda/auth-api-client";
-import createOrGetUserToken from "./createOrGetUserToken";
+import { default as ApiClient } from "@magda/auth-api-client";
 import {
+    createOrGetUserToken,
     getAbsoluteUrl,
     redirectOnSuccess,
     redirectOnError

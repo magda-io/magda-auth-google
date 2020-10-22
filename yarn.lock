@@ -14,10 +14,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@magda/auth-api-client@^0.0.58-alpha.0":
-  version "0.0.58-alpha.0"
-  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-0.0.58-alpha.0.tgz#bc817134a0d50ffaf3ee1490184e72b0327720c6"
-  integrity sha512-op98Rd/q1DE7Rw5M6qRUQxa2QVQb5FKAuJSpcAyGagWZ3SaenMwpa9CjLOWaMlJgo+Y7cQ/oKL2tgCwQCX+j3Q==
+"@magda/auth-api-client@^0.0.58-alpha.1":
+  version "0.0.58-alpha.1"
+  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-0.0.58-alpha.1.tgz#36327dd09a4119859a6263b826f180445e1161d7"
+  integrity sha512-gN6P2zK7Lniq7Km0/0cTdm8eMfODYuGPiXfPx7xm8oLbprm9KX3JgaKtSfoaHvP0wszlFuiiLDau1tqknNhWSQ==
   dependencies:
     "@types/urijs" "1.19.1"
 

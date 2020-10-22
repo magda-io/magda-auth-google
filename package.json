@@ -29,7 +29,7 @@
     "@types/yargs": "^15.0.9"
   },
   "dependencies": {
-    "@magda/auth-api-client": "^0.0.58-alpha.0",
+    "@magda/auth-api-client": "^0.0.58-alpha.1",
     "@magda/typescript-common": "^0.0.58-rc.3",
     "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
