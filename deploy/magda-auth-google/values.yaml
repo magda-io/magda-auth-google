@@ -1,3 +1,9 @@
+# -- Google Client Id. You **must** provide this value to make this plugin work
+# Besides, this id. You also need to provide `googleClientSecret` via secret `oauth-secrets` (key: google-client-secret).
+# You can use [Magda Create Secret Tool](https://www.npmjs.com/package/@magda/create-secrets) to create this secret.
+googleClientId:
+
+# -- only for providing appropriate default value for helm lint
 global:
   image: {}
   rollingUpdate: {}
@@ -10,7 +16,8 @@ global:
 # <li>result: (string) Compulsory. Possible value: "success" or "failure". </li>
 # <li>errorMessage: (string) Optional. Text message to provide more information on the error to the user. </li>
 # </ul>
-# This field is for overriding the value set by global.authPluginRedirectUrl for this auth plugin
+# This field is for overriding the value set by `global.authPluginRedirectUrl`.
+# Unless you want to have a different value only for this auth plugin, you shouldn't set this value.
 authPluginRedirectUrl:
 
 # image setting loadding order: (from higher priority to lower priority)
@@ -21,6 +28,7 @@ authPluginRedirectUrl:
 # You can set `imagePullSecret` value to `false` (bool) to reset the value (see example below)
 
 image: 
+  # -- default docker image name
   name: "magda-auth-google"
   # repository: 
   # tag: 
@@ -35,6 +43,8 @@ defaultImage:
 # -- no. of initial replicas
 replicas: 1
 
+# -- which system account we used to talk to auth api
+# The value of this field will only be used when `global.defaultAdminUserId` has no value
 defaultAdminUserId: "00000000-0000-4000-8000-000000000000"
 
 resources:

@@ -1,7 +1,7 @@
 {
   "name": "magda-auth-google",
   "version": "1.0.0",
-  "description": "An Openfass Serverless Function template for Magda",
+  "description": "A Magda Authentication Plugin for Google",
   "repository": "https://github.com/magda-io/magda-auth-google.git",
   "author": "Jacky Jiang <jacky.jiang@data61.csiro.au>",
   "license": "Apache-2.0",
@@ -14,8 +14,8 @@
     "test": "mocha --require ts-node/register \"src/test/**/*.spec.ts\"",
     "docker-build-local": "create-docker-context-for-node-component --build --push --tag auto --local",
     "docker-build-prod": "create-docker-context-for-node-component --build --push --tag auto",
-    "helm-lint": "helm lint deploy/magda-magda-auth-google -f deploy/test-deploy.yaml",
-    "deploy-local": "helm template deploy/magda-auth-google -f deploy/minikube-dev.yaml | kubectl apply -f -",
+    "helm-lint": "helm lint deploy/magda-auth-google -f deploy/test-deploy.yaml",
+    "helm-docs": "helm-docs -t ./README.md.gotmpl -o ../../README.md",
     "retag-and-push": "retag-and-push"
   },
   "devDependencies": {
