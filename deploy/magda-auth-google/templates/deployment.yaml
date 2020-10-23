@@ -80,4 +80,3 @@ See chart value file for details of the logic used to generate this setting valu
             secretKeyRef:
               name: oauth-secrets
               key: google-client-secret
-              optional: true
