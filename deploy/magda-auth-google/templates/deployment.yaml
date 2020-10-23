@@ -47,23 +47,12 @@ See chart value file for details of the logic used to generate this setting valu
           initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 10
 {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
-        - name: TENANT_URL
-          value: "http://tenant-api/v0"
         - name: USER_ID
           value: {{ .Values.global.defaultAdminUserId | default .Values.defaultAdminUserId }}
-        - name: INTERNAL_URL
-          value: "http://minion-format"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:

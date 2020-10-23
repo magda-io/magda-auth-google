@@ -86,13 +86,6 @@ const app = express();
 */
 app.get("/healthz", (req, res) => res.send("OK"));
 
-/** 
- * K8s readiness probe
- * At the moment, its functionality is same as /healthz. 
- * We should make it at least check key resource is ready e.g. session db is accessible
-*/
-app.get("/readiness", (req, res) => res.send("OK"));
-
 /**
  * a 36x36 size icon to be shown on frontend login page
  */
