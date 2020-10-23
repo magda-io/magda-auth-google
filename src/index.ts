@@ -4,6 +4,8 @@ import google from "./google";
 import AuthApiClient from "@magda/auth-api-client";
 import { createMagdaSessionRouter, AuthPluginConfig } from "./auth-plugin-sdk";
 
+const coerceJson = (path?: string) => path && require(path);
+
 const argv = yargs
     .config()
     .help()
@@ -54,6 +56,14 @@ const argv = yargs
             process.env.SESSION_SECRET ||
             process.env.npm_package_config_SESSION_SECRET,
         demand: true
+    })
+    .option("cookieJson", {
+        describe:
+            "Path of the json that defines cookie options, as per " +
+            "https://github.com/expressjs/session#cookie. These will " +
+            "be merged with the default options specified in Authenticator.ts.",
+        type: "string",
+        coerce: coerceJson
     })
     .option("googleClientId", {
         describe: "The client ID to use for Google OAuth.",
@@ -110,13 +120,27 @@ app.get("/config", (req, res) =>
  */
 app.use(
     createMagdaSessionRouter({
+        cookieOptions: argv.cookieJson as any,
         sessionSecret: argv.sessionSecret,
         sessionDBHost: argv.dbHost,
         sessionDBPort: argv.dbPort
     })
 );
 
+// Setup & initialise passport
 const passport = require("passport");
+
+// Setup user data serialisation: to session and also available via `req.session.passport.user`
+// We generally should serialize user to our user id to avoid taking up session space with user data unnecessarily
+passport.serializeUser(function (user: any, cb:any) {
+    cb(null, user);
+});
+
+// Setup user data deserialisation: from session and the result is available via `req.user`
+// We generally should deserialize the user info from session user (e.g. user id) and lookup user dataset and return the user data
+passport.deserializeUser(function (user: any, cb:any) {
+    cb(null, user);
+});
 
 // initialise passport
 app.use(passport.initialize());

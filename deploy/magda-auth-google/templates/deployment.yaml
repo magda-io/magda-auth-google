@@ -38,7 +38,10 @@ See chart value file for details of the logic used to generate this setting valu
             "--authPluginRedirectUrl", {{ .Values.authPluginRedirectUrl | default .Values.global.authPluginRedirectUrl | quote }},
             "--authApiUrl", "http://authorization-api/v0",
             "--googleClientId", {{ .Values.googleClientId | quote }}
-        ]
+        ],
+        volumeMounts:
+          - name: gateway-config
+            mountPath: /etc/gateway-config
 {{- if .Values.global.enableLivenessProbes }}
         livenessProbe:
           httpGet:
@@ -80,3 +83,8 @@ See chart value file for details of the logic used to generate this setting valu
             secretKeyRef:
               name: oauth-secrets
               key: google-client-secret
+      # --- load cookie setting from gateway-config
+      volumes:
+        - name: gateway-config
+          configMap:
+            name: gateway-config

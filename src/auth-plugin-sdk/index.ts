@@ -4,8 +4,10 @@ import urijs from "urijs";
 import createPool, { PoolCreationOptions } from "./createPool";
 import AuthApiClient, { User, UserToken, Maybe } from "@magda/auth-api-client";
 import passport from "passport";
+import _ from "lodash";
 
 export type MagdaSessionRouterOptions = {
+    cookieOptions: SessionCookieOptions;
     sessionSecret: string;
     sessionDBHost: string;
     sessionDBPort: number;
@@ -15,7 +17,24 @@ export type MagdaSessionRouterOptions = {
     sessionDBName?: string;
 };
 
+export type SessionCookieOptions = {
+    maxAge?: number;
+    signed?: boolean;
+    expires?: Date;
+    httpOnly?: boolean;
+    path?: string;
+    domain?: string;
+    secure?: boolean | "auto";
+    encode?: (val: string) => string;
+    sameSite?: boolean | "lax" | "strict" | "none";
+};
+
 export const DEFAULT_SESSION_COOKIE_NAME: string = "connect.sid";
+export let DEFAULT_SESSION_COOKIE_OPTIONS: SessionCookieOptions = {
+    maxAge: 7 * 60 * 60 * 1000,
+    // -- auto: secure will be auto set depends on the http or https connection
+    secure: "auto"
+};
 
 export function createMagdaSessionRouter(
     options: MagdaSessionRouterOptions
@@ -48,6 +67,15 @@ export function createMagdaSessionRouter(
         pool: dbPool
     });
 
+    const sessionCookieOptions = !_.isEmpty(options.cookieOptions)
+        ? {
+              ...DEFAULT_SESSION_COOKIE_OPTIONS,
+              ...options.cookieOptions
+          }
+        : {
+              ...DEFAULT_SESSION_COOKIE_OPTIONS
+          };
+
     const sessionMiddleware = session({
         store,
         // --- we don't have to set session cookie name
@@ -55,6 +83,7 @@ export function createMagdaSessionRouter(
         name: DEFAULT_SESSION_COOKIE_NAME,
         // --- no need to set cookie settings. Gateway will auto change the setting according to configuration.
         secret: options.sessionSecret,
+        cookie: sessionCookieOptions,
         resave: false,
         saveUninitialized: false,
         rolling: true
