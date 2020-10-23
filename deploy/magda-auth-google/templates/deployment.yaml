@@ -74,6 +74,18 @@ See chart value file for details of the logic used to generate this setting valu
             secretKeyRef:
               name: auth-secrets
               key: session-secret
+{{- if .Values.global.noDbAuth }}
+        - name: PGUSER
+          value: client
+{{- else }}
+        - name: PGUSER
+          value: client
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-passwords
+              key: session-db-client
+{{- end }}
         - name: GOOGLE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
