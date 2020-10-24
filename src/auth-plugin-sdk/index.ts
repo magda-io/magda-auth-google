@@ -32,7 +32,8 @@ export type SessionCookieOptions = {
 export const DEFAULT_SESSION_COOKIE_NAME: string = "connect.sid";
 export let DEFAULT_SESSION_COOKIE_OPTIONS: SessionCookieOptions = {
     maxAge: 7 * 60 * 60 * 1000,
-    // -- auto: secure will be auto set depends on the http or https connection
+    sameSite: "lax",
+    httpOnly: true,
     secure: "auto"
 };
 
@@ -86,7 +87,8 @@ export function createMagdaSessionRouter(
         cookie: sessionCookieOptions,
         resave: false,
         saveUninitialized: false,
-        rolling: true
+        rolling: true,
+        proxy: true
     });
 
     router.use(sessionMiddleware);
