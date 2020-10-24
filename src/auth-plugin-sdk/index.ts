@@ -180,18 +180,38 @@ export function redirectOnError(
     res.redirect(source.toString());
 }
 
+/**
+ * Verify the user using the user profile received during the authentication.
+ * If a user can be located, return UserToken type data.
+ * Otherwise, create a new user and return UserToken type data .
+ *
+ * @export
+ * @param {AuthApiClient} authApi
+ * @param {passport.Profile} profile
+ * @param {string} source
+ * @param {(user: User, profile: passport.Profile) => Promise<void>} [onUserCreated] an optional call will be called when a user has just been created.
+ * The created user data and received user profile will be passed as parameters. This handler can be used to customised the user initial settings
+ * e.g. setting up default roles for the user
+ * @returns {Promise<UserToken>}
+ */
 export function createOrGetUserToken(
     authApi: AuthApiClient,
     profile: passport.Profile,
-    source: string
+    source: string,
+    onUserCreated?: (user: User, profile: passport.Profile) => Promise<void>
 ): Promise<UserToken> {
     return authApi.lookupUser(source, profile.id).then((maybe: Maybe<User>) =>
         maybe.caseOf({
             just: (user: User) => Promise.resolve(userToUserToken(user)),
-            nothing: () =>
-                authApi
-                    .createUser(profileToUser(profile, source))
-                    .then(userToUserToken)
+            nothing: async () => {
+                const user = await authApi.createUser(
+                    profileToUser(profile, source)
+                );
+                if (typeof onUserCreated === "function") {
+                    await onUserCreated(user, profile);
+                }
+                return userToUserToken(user);
+            }
         })
     );
 }

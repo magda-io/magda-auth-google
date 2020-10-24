@@ -52,7 +52,7 @@ export default function google(options: GoogleOptions): Router {
                 cb: (error: any, user?: any, info?: any) => void
             ) {
                 createOrGetUserToken(authorizationApi, profile, "google")
-                    .then((userId) => cb(null, userId))
+                    .then((userToken) => cb(null, userToken))
                     .catch((error) => cb(error));
             }
         )
