@@ -11,6 +11,7 @@
     "build": "tsc -b",
     "watch": "tsc -b --watch",
     "start": "node dist/index.js",
+    "dev": "run-typescript-in-nodemon src/index.ts",
     "test": "mocha --require ts-node/register \"src/test/**/*.spec.ts\"",
     "docker-build-local": "create-docker-context-for-node-component --build --push --tag auto --local",
     "docker-build-prod": "create-docker-context-for-node-component --build --push --tag auto",
@@ -48,7 +49,10 @@
     "docker": {
       "name": "data61/magda-auth-google",
       "include": "node_modules dist Dockerfile package.json"
-    }
+    },
+    "jwtSecret": "squirrel",
+    "SESSION_SECRET": "keyboard cat",
+    "userId": "00000000-0000-4000-8000-000000000000"
   },
   "husky": {
     "hooks": {

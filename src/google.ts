@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Authenticator, Profile } from "passport";
 import { default as ApiClient } from "@magda/auth-api-client";
@@ -18,7 +18,7 @@ export interface GoogleOptions {
     authPluginRedirectUrl: string;
 }
 
-export default function google(options: GoogleOptions) {
+export default function google(options: GoogleOptions): Router {
     const authorizationApi = options.authorizationApi;
     const passport = options.passport;
     const clientId = options.clientId;
@@ -31,7 +31,11 @@ export default function google(options: GoogleOptions) {
     );
 
     if (!clientId) {
-        return undefined;
+        throw new Error("Google client id can't be empty!");
+    }
+
+    if (!clientSecret) {
+        throw new Error("Google client secret can't be empty!");
     }
 
     passport.use(

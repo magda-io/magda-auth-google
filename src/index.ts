@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import yargs from "yargs";
 import google from "./google";
 import AuthApiClient from "@magda/auth-api-client";
@@ -45,8 +46,7 @@ const argv = yargs
             "The secret to use to sign JSON Web Token (JWT) for authenticated requests.  This can also be specified with the JWT_SECRET environment variable.",
         type: "string",
         default:
-            process.env.JWT_SECRET || process.env.npm_package_config_JWT_SECRET,
-        demand: true
+            process.env.JWT_SECRET || process.env.npm_package_config_jwtSecret
     })
     .option("sessionSecret", {
         describe:
@@ -54,8 +54,7 @@ const argv = yargs
         type: "string",
         default:
             process.env.SESSION_SECRET ||
-            process.env.npm_package_config_SESSION_SECRET,
-        demand: true
+            process.env.npm_package_config_SESSION_SECRET
     })
     .option("cookieJson", {
         describe:
@@ -70,7 +69,7 @@ const argv = yargs
         type: "string",
         default:
             process.env.GOOGLE_CLIENT_ID ||
-            process.env.npm_package_config_googleClientId
+            process.env.npm_package_config_googleClientId,
     })
     .option("googleClientSecret", {
         describe:
@@ -84,22 +83,23 @@ const argv = yargs
         describe:
             "The user id to use when making authenticated requests to the registry",
         type: "string",
-        demand: true,
         default: process.env.USER_ID || process.env.npm_package_config_userId
     }).argv;
 
 // Create a new Express application.
 const app = express();
 
-/** 
+/**
  * K8s liveness probe
-*/
+ */
 app.get("/healthz", (req, res) => res.send("OK"));
 
 /**
  * a 36x36 size icon to be shown on frontend login page
  */
-app.get("/icon.svg", (req, res) => res.sendFile("./assets/google-logo.svg"));
+app.get("/icon.svg", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "../assets/google-logo.svg"))
+);
 
 /**
  * response plugin config so other module knows how to interact with this plugin
@@ -132,13 +132,13 @@ const passport = require("passport");
 
 // Setup user data serialisation: to session and also available via `req.session.passport.user`
 // We generally should serialize user to our user id to avoid taking up session space with user data unnecessarily
-passport.serializeUser(function (user: any, cb:any) {
+passport.serializeUser(function (user: any, cb: any) {
     cb(null, user);
 });
 
 // Setup user data deserialisation: from session and the result is available via `req.user`
 // We generally should deserialize the user info from session user (e.g. user id) and lookup user dataset and return the user data
-passport.deserializeUser(function (user: any, cb:any) {
+passport.deserializeUser(function (user: any, cb: any) {
     cb(null, user);
 });
 
