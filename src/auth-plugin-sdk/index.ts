@@ -194,21 +194,68 @@ export function redirectOnError(
  * e.g. setting up default roles for the user
  * @returns {Promise<UserToken>}
  */
+
+/**
+ * Verify the user using the user profile received during the authentication.
+ * If a user can be located, return UserToken type data.
+ * Otherwise, create a new user and return UserToken type data .
+ *
+ * @export
+ * @param {AuthApiClient} authApi
+ * @param {passport.Profile} profile
+ * @param {string} source
+ * @param {(
+ *         authApiClient: AuthApiClient,
+ *         userData: User,
+ *         profile: passport.Profile
+ *     ) => Promise<User>} [beforeUserCreated] an optional handler that will be called just before a user is created.
+ * The user data returned by this handler will be used to create a user record. The following parameters will be provided to the handler:
+ * - authApiClient: Auth API Client. You can use it to add a role to the user.
+ * - userData: the user data that is converted from the user profile received using the default conversion logic.
+ * - profile: the user profile received
+ *
+ * @param {(
+ *         authApiClient: AuthApiClient,
+ *         user: User,
+ *         profile: passport.Profile
+ *     ) => Promise<void>} [afterUserCreated] an optional call that will be called when a user has just been created.
+ * The following parameters will be provided to the handler:
+ * - authApiClient: Auth API Client. You can use it to add a role to the user.
+ * - user: the user data of the magda user that is just created.
+ * - profile: the user profile received
+ *
+ * @returns {Promise<UserToken>}
+ */
 export function createOrGetUserToken(
     authApi: AuthApiClient,
     profile: passport.Profile,
     source: string,
-    onUserCreated?: (user: User, profile: passport.Profile) => Promise<void>
+    beforeUserCreated?: (
+        authApiClient: AuthApiClient,
+        userData: User,
+        profile: passport.Profile
+    ) => Promise<User>,
+    afterUserCreated?: (
+        authApiClient: AuthApiClient,
+        user: User,
+        profile: passport.Profile
+    ) => Promise<void>
 ): Promise<UserToken> {
     return authApi.lookupUser(source, profile.id).then((maybe: Maybe<User>) =>
         maybe.caseOf({
             just: (user: User) => Promise.resolve(userToUserToken(user)),
             nothing: async () => {
                 const user = await authApi.createUser(
-                    profileToUser(profile, source)
+                    typeof beforeUserCreated === "function"
+                        ? await beforeUserCreated(
+                              authApi,
+                              profileToUser(profile, source),
+                              profile
+                          )
+                        : profileToUser(profile, source)
                 );
-                if (typeof onUserCreated === "function") {
-                    await onUserCreated(user, profile);
+                if (typeof afterUserCreated === "function") {
+                    await afterUserCreated(authApi, user, profile);
                 }
                 return userToUserToken(user);
             }
