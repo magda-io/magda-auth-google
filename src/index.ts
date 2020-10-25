@@ -3,7 +3,10 @@ import path from "path";
 import yargs from "yargs";
 import google from "./google";
 import AuthApiClient, { UserToken } from "@magda/auth-api-client";
-import { createMagdaSessionRouter, AuthPluginConfig } from "./auth-plugin-sdk";
+import {
+    createMagdaSessionRouter,
+    AuthPluginConfig
+} from "@magda/authentication-plugin-sdk";
 
 const coerceJson = (path?: string) => path && require(path);
 
@@ -130,12 +133,12 @@ app.use(
 // Setup & initialise passport
 const passport = require("passport");
 
-/** 
+/**
  * Setup user data serialisation & deserialisation handlers for passport session
  * Here simply retrieve & store the same user data with no changes
  * These handlers logic should NOT be changed.
  * If it's require to save extra data in session, please implement relevant logic in your passport Strategy `VerifyCallback`.
-*/
+ */
 passport.serializeUser((user: UserToken, cb: any) => cb(null, user));
 passport.deserializeUser((user: UserToken, cb: any) => cb(null, user));
 

@@ -7,7 +7,7 @@ import {
     getAbsoluteUrl,
     redirectOnSuccess,
     redirectOnError
-} from "./auth-plugin-sdk";
+} from "@magda/authentication-plugin-sdk";
 
 export interface GoogleOptions {
     authorizationApi: ApiClient;
