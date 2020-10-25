@@ -14,12 +14,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@magda/auth-api-client@^0.0.58-alpha.2":
-  version "0.0.58-alpha.2"
-  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-0.0.58-alpha.2.tgz#de298f2b7604dc7ee62297cefcb2486240ed58fc"
-  integrity sha512-5gCtfT8OxgNO6ThY24heqmAuKZa4i1FgLTF2uqE0VvXJAX+7jP5v3k+5ElEh9DoXX8hBDAdeJHiN5XU9hwjN9Q==
-  dependencies:
-    "@types/urijs" "1.19.1"
+"@magda/auth-api-client@^0.0.58-alpha.3":
+  version "0.0.58-alpha.3"
+  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-0.0.58-alpha.3.tgz#579f8add8e051cde517d30fb904f7421aca98432"
+  integrity sha512-GOK+H6KOPea+XaWJ/wjlhTLNC+SbD7mDhDb1uvHvqReqJ+4ZhSuOokpnKu8oHHVaYpoQ4ODx8u8+jakTnrhstg==
 
 "@magda/authentication-plugin-sdk@^0.0.58-alpha.1":
   version "0.0.58-alpha.1"
@@ -193,11 +191,6 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
-
-"@types/urijs@1.19.1":
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/@types/urijs/-/urijs-1.19.1.tgz#da69e8479eec0bb4580c7cc218d218f107d2d526"
-  integrity sha512-5waMuQ9z8pH8+5yAyX05bsA7SOl50l5ZkeMripxoOgN2+nSQb4TOSuhWoRlPt7FPIIohk6iBrX/rEktUJa8KfQ==
 
 "@types/urijs@^1.19.12":
   version "1.19.12"

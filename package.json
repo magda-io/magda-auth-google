@@ -30,7 +30,7 @@
     "mocha": "^8.2.0"
   },
   "dependencies": {
-    "@magda/auth-api-client": "^0.0.58-alpha.2",
+    "@magda/auth-api-client": "^0.0.58-alpha.3",
     "@magda/authentication-plugin-sdk": "^0.0.58-alpha.1",
     "express": "^4.15.4",
     "lodash": "^4.17.20",
