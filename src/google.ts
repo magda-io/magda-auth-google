@@ -51,8 +51,45 @@ export default function google(options: GoogleOptions): Router {
                 profile: Profile,
                 cb: (error: any, user?: any, info?: any) => void
             ) {
-                createOrGetUserToken(authorizationApi, profile, "google")
-                    .then((userToken) => cb(null, userToken))
+                createOrGetUserToken(
+                    authorizationApi,
+                    profile,
+                    "google",
+                    async (apiClient, user, profile) => {
+                        console.log("Before user is created...");
+                        console.log("User: ", user);
+                        console.log("Profile: ", profile);
+
+                        return {
+                            ...user,
+                            // Set user's organisation unit id
+                            // We may do some lookup using profile data to determine which orgUnitId we should auto assign to the user
+                            orgUnitId: "6f833dbd-27e8-4ec6-a9bd-20e443030546"
+                        };
+                    },
+                    async (apiClient, user, profile) => {
+                        console.log("After user is created...");
+                        console.log("User: ", user);
+                        console.log("Profile: ", profile);
+
+                        // Add admin role in additional to the default `AUTHENTICATED_USERS_ROLE`
+                        // we can decide which role to add to user by looking at profile data
+                        const newRoleIdList = await apiClient.addUserRoles(
+                            user.id!,
+                            ["00000000-0000-0003-0000-000000000000"]
+                        );
+
+                        console.log("Roles: ", newRoleIdList);
+                    }
+                )
+                    .then((userToken) =>
+                        cb(null, {
+                            ...userToken,
+                            // save some extra data to session
+                            // you can verify the session data from session database
+                            myExtraSessionData: { abc: 123 }
+                        })
+                    )
                     .catch((error) => cb(error));
             }
         )
