@@ -4,6 +4,10 @@
 
 A Magda Authentication Plugin for Google
 
+Requires MAGDA version 0.0.58 or above.
+
+To deploy the authentication plugin with your MAGDA instance, please check [MAGDA Gateway Helm Chart Document](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md).
+
 **Homepage:** <https://github.com/magda-io/magda-auth-google>
 
 ## Source Code
@@ -27,7 +31,7 @@ Kubernetes: `>= 1.14.0-0`
 | defaultImage.imagePullSecret | bool | `false` |  |
 | defaultImage.pullPolicy | string | `"IfNotPresent"` |  |
 | defaultImage.repository | string | `"docker.io/data61"` |  |
-| global | object | `{"authPluginRedirectUrl":"/sign-in-redirect","image":{},"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
+| global | object | `{"authPluginRedirectUrl":"/sign-in-redirect","externalUrl":"","image":{},"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
 | googleClientId | string | `nil` | Google Client Id. You **must** provide this value to make this plugin work Besides, this id. You also need to provide `googleClientSecret` via secret `oauth-secrets` (key: google-client-secret). You can use [Magda Create Secret Tool](https://www.npmjs.com/package/@magda/create-secrets) to create this secret. |
 | image.name | string | `"magda-auth-google"` | default docker image name |
 | replicas | int | `1` | no. of initial replicas |
