@@ -4,6 +4,11 @@ on: push
 
 env:
   REPO_NAME: magda-auth-google
+  # Github account username (used for access github registry)
+  GH_USERNAME: magdabot
+  # Github Orgnisation name or user name for this repo
+  GH_ORGNAME: magda-io
+
 
 jobs:
   build-test-docker:
@@ -19,19 +24,14 @@ jobs:
       - run: yarn build
       - run: yarn test
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v1
-        with:
-          version: v3.2.0
-
       - run: yarn helm-lint
 
       - name: Login to GitHub Package Repository
         env:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        run: docker login docker.pkg.github.com -u magdabot -p ${GH_TOKEN}
+        run: docker login docker.pkg.github.com -u ${GH_USERNAME} -p ${GH_TOKEN}
       - name: Build Docker Image & Push
-        run: yarn docker-build-prod --repository=docker.pkg.github.com/magda-io/${REPO_NAME} --name=${REPO_NAME} --version=${GITHUB_SHA}
+        run: yarn docker-build-prod --repository=docker.pkg.github.com/${GH_ORGNAME}/${REPO_NAME} --name=${REPO_NAME} --version=${GITHUB_SHA}
 
   build-test-node-12:
     name: Build, Test Only with Node 12
