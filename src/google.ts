@@ -100,7 +100,10 @@ export default function google(options: GoogleOptions): Router {
     router.get("/", (req, res, next) => {
         const options: any = {
             scope: ["profile", "email"],
-            state: resultRedirectionUrl
+            state:
+                typeof req?.query?.redirect === "string" && req.query.redirect
+                    ? getAbsoluteUrl(req.query.redirect, externalUrl)
+                    : resultRedirectionUrl
         };
         passport.authenticate("google", options)(req, res, next);
     });
