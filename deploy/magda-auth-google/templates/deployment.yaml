@@ -36,14 +36,16 @@ See chart value file for details of the logic used to generate this setting valu
             "--dbPort", "5432",
             "--cookieJson", "/etc/gateway-config/cookie.json",
             "--externalUrl", {{ .Values.global.externalUrl | quote }},
+            "--userSessionRules", "/etc/magda-auth-google-config/userSessionRules.json",
             "--authPluginRedirectUrl", {{ .Values.authPluginRedirectUrl | default .Values.global.authPluginRedirectUrl | quote }},
             "--authApiUrl", "http://authorization-api/v0",
-            "--googleClientId", {{ .Values.googleClientId | quote }},
-            "--userSessionRules", {{ .Values.userSessionRules | quote }}
+            "--googleClientId", {{ .Values.googleClientId | quote }}
         ]
         volumeMounts:
           - name: gateway-config
             mountPath: /etc/gateway-config
+          - name: magda-auth-google-config
+            mountPath: /etc/magda-auth-google-config
 {{- if .Values.global.enableLivenessProbes }}
         livenessProbe:
           httpGet:
@@ -90,3 +92,6 @@ See chart value file for details of the logic used to generate this setting valu
         - name: gateway-config
           configMap:
             name: gateway-config
+        - name: magda-auth-google-config
+          configMap:
+            name: magda-auth-google-config        

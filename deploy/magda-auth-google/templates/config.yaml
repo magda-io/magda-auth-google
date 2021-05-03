@@ -1,0 +1,7 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: magda-auth-google-config
+data:
+  userSessionRules.json: {{ .Values.userSessionRules | default dict | mustToRawJson | quote }}
