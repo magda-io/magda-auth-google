@@ -87,7 +87,13 @@ const argv = yargs
             "The user id to use when making authenticated requests to the registry",
         type: "string",
         default: process.env.USER_ID || process.env.npm_package_config_userId
-    }).argv;
+    })
+    .option("userSessionRules", {
+        describe:
+          "A json file on how to create session data for a user \
+          E.g. test/resources/config/userSessionRules.json",
+        type: "string"
+      }).argv;
 
 // Create a new Express application.
 const app = express();

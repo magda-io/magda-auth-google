@@ -16,9 +16,13 @@ export interface GoogleOptions {
     clientSecret: string;
     externalUrl: string;
     authPluginRedirectUrl: string;
+    userSessionRules?: string;
 }
 
 export default function google(options: GoogleOptions): Router {
+    const userSessionRules: any | undefined = options.userSessionRules
+        ? JSON.parse(require(options.userSessionRules))
+        : undefined;
     const authorizationApi = options.authorizationApi;
     const passport = options.passport;
     const clientId = options.clientId;
@@ -51,6 +55,11 @@ export default function google(options: GoogleOptions): Router {
                 profile: Profile,
                 cb: (error: any, user?: any, info?: any) => void
             ) {
+
+                const emails = profile.emails;
+                const roles: Array<string> = userSessionRules.roles;
+                const groups: Array<string> = userSessionRules.groups;
+
                 createOrGetUserToken(
                     authorizationApi,
                     profile,
@@ -61,38 +70,33 @@ export default function google(options: GoogleOptions): Router {
                         console.log("Profile: ", profile);
 
                         return {
-                            ...user,
-                            // Set user's organisation unit id
-                            // We may do some lookup using profile data to determine which orgUnitId we should auto assign to the user
-                            orgUnitId: "6f833dbd-27e8-4ec6-a9bd-20e443030546"
+                            ...user
                         };
                     },
                     async (apiClient, user, profile) => {
                         console.log("After user is created...");
                         console.log("User: ", user);
                         console.log("Profile: ", profile);
-
-                        // Add admin role in additional to the default `AUTHENTICATED_USERS_ROLE`
-                        // we can decide which role to add to user by looking at profile data
+                        // If assigning admin role to a user without setting isAdmin flag, the user will not have non-read permissions.
+                        // As precausion, better not to set the flag in case of config mistake. Manually set this flag if required.
+                        const filteredRoles = roles.filter(r => emails.some((val) => userSessionRules[`${r}`].indexOf(val.type) !== -1));
                         const newRoleIdList = await apiClient.addUserRoles(
                             user.id!,
-                            ["00000000-0000-0003-0000-000000000000"]
+                            filteredRoles
                         );
 
                         console.log("Roles: ", newRoleIdList);
                     }
                 )
-                    .then((userToken) =>
+                    .then((userToken) => {
+                        const filteredGroups: Array<string> = groups.filter(g => emails.some((val) => userSessionRules[`${g}`].indexOf(val.value) !== -1));
                         cb(null, {
                             ...userToken,
-                            // save some extra data to session
-                            // you can verify the session data from session database
-                            myExtraSessionData: { abc: 123 }
+                            session: { groups: filteredGroups }
                         })
-                    )
+                    })
                     .catch((error) => cb(error));
-            }
-        )
+            })
     );
 
     const router: express.Router = express.Router();

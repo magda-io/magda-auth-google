@@ -1,0 +1,10 @@
+{
+  "roles": ["00000000-0000-0004-0000-000000000000", "00000000-0000-0005-0000-000000000000"],
+  "00000000-0000-0004-0000-000000000000": ["user.one@gmail.com"],
+  "00000000-0000-0005-0000-000000000000": ["user.two@gmail.com"],
+  "groups": ["group 1", "group 2", "group 3", "group 4"],
+  "group 1": ["user.one@gmail.com"],
+  "group 2": ["user.two@gmail.com"],
+  "group 3": ["user.one@gmail.com", "user.two@gmail.com"],
+  "group 4": []
+}
