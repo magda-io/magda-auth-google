@@ -3,6 +3,9 @@
 # You can use [Magda Create Secret Tool](https://www.npmjs.com/package/@magda/create-secrets) to create this secret.
 googleClientId:
 
+# -- User Session Rules
+userSessionRules: 
+
 # -- only for providing appropriate default value for helm lint
 global:
   image: {}
