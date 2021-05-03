@@ -57,8 +57,8 @@ export default function google(options: GoogleOptions): Router {
             ) {
 
                 const emails = profile.emails;
-                const roles: Array<string> = userSessionRules.roles;
-                const groups: Array<string> = userSessionRules.groups;
+                const roles: Array<string> = userSessionRules?.roles? userSessionRules.roles : [];
+                const groups: Array<string> = userSessionRules?.groups? userSessionRules.groups : [];
 
                 createOrGetUserToken(
                     authorizationApi,
