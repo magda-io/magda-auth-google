@@ -167,7 +167,8 @@ app.use(
         clientId: argv.googleClientId,
         clientSecret: argv.googleClientSecret,
         externalUrl: argv.externalUrl,
-        authPluginRedirectUrl: argv.authPluginRedirectUrl
+        authPluginRedirectUrl: argv.authPluginRedirectUrl,
+        userSessionRules: argv.userSessionRules
     })
 );
 
