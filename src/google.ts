@@ -20,9 +20,9 @@ export interface GoogleOptions {
 }
 
 export default function google(options: GoogleOptions): Router {
-    const userSessionRules: any | undefined = options.userSessionRules
-        ? JSON.parse(require(options.userSessionRules))
-        : undefined;
+    const userSessionRules = options.userSessionRules ? require(options.userSessionRules) : {};
+    console.log("userSessionRules", userSessionRules);
+
     const authorizationApi = options.authorizationApi;
     const passport = options.passport;
     const clientId = options.clientId;
@@ -77,9 +77,10 @@ export default function google(options: GoogleOptions): Router {
                         console.log("After user is created...");
                         console.log("User: ", user);
                         console.log("Profile: ", profile);
-                        // If assigning admin role to a user without setting isAdmin flag, the user will not have non-read permissions.
+                        // If assigning admin role to a user without setting isAdmin flag, the user will only have admin's read permissions.
+                        // That is, such an admin user will not have any write permissions.
                         // As precausion, better not to set the flag in case of config mistake. Manually set this flag if required.
-                        const filteredRoles = roles.filter(r => emails.some((val) => userSessionRules[`${r}`].indexOf(val.type) !== -1));
+                        const filteredRoles = roles.filter(r => emails.some((val) => userSessionRules[`${r}`].indexOf(val.value) !== -1));
                         const newRoleIdList = await apiClient.addUserRoles(
                             user.id!,
                             filteredRoles
