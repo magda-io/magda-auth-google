@@ -1,12 +1,36 @@
 # magda-auth-google
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square)
 
 A Magda Authentication Plugin for Google
 
 Requires MAGDA version 0.0.58 or above.
 
 To deploy the authentication plugin with your MAGDA instance, please check [MAGDA Gateway Helm Chart Document](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md).
+
+### How to Use
+1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
+```yaml
+- name: magda-auth-google
+  version: 1.1.0
+  repository: https://charts.magda.io
+```
+
+2. Config the auth plugin with OIDC client Id & issuer
+```yaml
+magda-auth-google:
+  googleClientId: xxxxxx
+```
+
+3. Config Gatway to add the auth plugin to Gateway's plugin list (More details see [here](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md))
+```yaml
+gateway:
+  authPlugins:
+  - key: "google"
+    baseUrl: http://magda-auth-google
+```
+
+4. Create a secret `oauth-secrets` in your deployment Magda namespace with the correct value for `google-client-secret` key
 
 **Homepage:** <https://github.com/magda-io/magda-auth-google>
 
