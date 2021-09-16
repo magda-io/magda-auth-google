@@ -33,7 +33,9 @@
     "@types/urijs": "^1.19.12",
     "@types/yargs": "^15.0.9",
     "mocha": "^8.2.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "@magda/auth-api-client": "^0.0.60",
