@@ -67,17 +67,29 @@ See chart value file for details of the logic used to generate this setting valu
             secretKeyRef:
               name: auth-secrets
               key: session-secret
-{{- if .Values.global.noDbAuth }}
         - name: PGUSER
           value: client
-{{- else }}
-        - name: PGUSER
-          value: client
+{{- $dbSecret := (lookup "v1" "Secret" .Release.Namespace "session-db-password") | default dict }}
+{{- $combinedBbSecret := (lookup "v1" "Secret" .Release.Namespace "combined-db-password") | default dict }}
+{{- $legacyDbSecret := (lookup "v1" "Secret" .Release.Namespace "db-passwords") | default dict }}
+{{- if $dbSecret }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-passwords
-              key: session-db-client
+              name: "session-db-password"
+              key: "password"
+{{- else if $combinedBbSecret }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "combined-db-password"
+              key: "password"
+{{- else if and ($legacyDbSecret | empty | not) (.Values.global.noDbAuth | empty) }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "db-passwords"
+              key: "session-db-client"
 {{- end }}
         - name: GOOGLE_CLIENT_SECRET
           valueFrom:

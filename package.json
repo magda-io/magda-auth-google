@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@magda/ci-utils": "^1.0.1",
-    "@magda/scripts": "^0.0.57",
+    "@magda/docker-utils": "^0.0.60",
     "@types/express": "^4.0.37",
     "@types/lodash": "^4.14.162",
     "@types/mocha": "^8.0.3",
@@ -35,8 +35,8 @@
     "mocha": "^8.2.0"
   },
   "dependencies": {
-    "@magda/auth-api-client": "^0.0.58-alpha.4",
-    "@magda/authentication-plugin-sdk": "^0.0.58-alpha.1",
+    "@magda/auth-api-client": "^0.0.60",
+    "@magda/authentication-plugin-sdk": "^0.0.60",
     "express": "^4.15.4",
     "lodash": "^4.17.20",
     "passport": "0.2.2",
