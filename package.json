@@ -24,7 +24,7 @@
     "update-all-charts": "helm dep up ./deploy/magda-auth-google"
   },
   "devDependencies": {
-    "@magda/ci-utils": "^1.0.1",
+    "@magda/ci-utils": "^1.0.2",
     "@magda/docker-utils": "^0.0.60",
     "@types/express": "^4.0.37",
     "@types/lodash": "^4.14.162",

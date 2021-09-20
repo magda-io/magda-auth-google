@@ -20,10 +20,10 @@
     pg "^6.4.0"
     urijs "^1.19.4"
 
-"@magda/ci-utils@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@magda/ci-utils/-/ci-utils-1.0.1.tgz#e6ef2017130d4d12a7b2e32e1ac3f23a8d94555d"
-  integrity sha512-H/QLyZKlaiGqiHB6ytak7oExuNvl8j2aazMWLnnMXCzs71LOtmn5LA6PP1Et5hWECiQFvEjglcQLYXm4SDL+Cw==
+"@magda/ci-utils@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@magda/ci-utils/-/ci-utils-1.0.2.tgz#cf5383611a0a46f1dc7bac256e08a00f3d4c4974"
+  integrity sha512-oJ7LMNCAqG+zbwGM8RPhTepStK8HZqtF4bUWFsCqtaLnRFMKLjbM5qzWj7q/qtzLvIGAtpc45F/hoL0bszDNQQ==
   dependencies:
     fs-extra "^9.1.0"
     recursive-readdir "^2.2.2"
