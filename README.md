@@ -1,6 +1,6 @@
 # magda-auth-google
 
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square)
 
 A Magda Authentication Plugin for Google
 
@@ -16,7 +16,7 @@ To deploy the authentication plugin with your MAGDA instance, please check [MAGD
   repository: https://charts.magda.io
 ```
 
-2. Config the auth plugin with OIDC client Id & issuer
+2. Config the auth plugin with googleClientId:
 ```yaml
 magda-auth-google:
   googleClientId: xxxxxx
