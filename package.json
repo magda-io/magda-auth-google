@@ -20,7 +20,7 @@
     "retag-and-push": "retag-and-push",
     "version": "yarn update-helm-chart-version && yarn update-all-charts && yarn add-all-chart-version-changes && yarn add-all-helm-docs-changes",
     "add-all-chart-version-changes": "git ls-files -m | grep Chart.yaml | xargs git add && git ls-files -m | grep Chart.lock | xargs git add",
-    "add-all-helm-docs-changes": "helm-docs && git ls-files -m | grep -i readme.md | xargs git add",
+    "add-all-helm-docs-changes": "helm-docs && git ls-files -m | grep -i README.md | xargs git add",
     "update-all-charts": "helm dep up ./deploy/magda-auth-google"
   },
   "devDependencies": {
