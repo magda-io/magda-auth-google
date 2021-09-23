@@ -34,6 +34,18 @@ gateway:
 
 4. Create a secret `oauth-secrets` in your deployment Magda namespace with the correct value for `google-client-secret` key
 
+#### Google API Setup
+
+1. Open Google Cloud Console
+
+2. Go to `Credentials (APIs and Services)`
+
+3. Create an OAuth 2.0 Client IDs
+
+The `Authorised redirect URIs` should be: https://my-magda.com/auth/login/plugin/google/return
+
+Here `my-magda.com` is the domain you serve magda from. It should match [helm chart config `global.externalUrl`](https://github.com/magda-io/magda/tree/master/deploy/helm/magda-core).
+
 {{ template "chart.homepageLine" . }}
 
 {{ template "chart.maintainersSection" . }}
