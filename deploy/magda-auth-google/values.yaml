@@ -35,15 +35,16 @@ autoscaler:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
 
-image: 
-  # -- default docker image name
-  name: "magda-auth-google"
+image: {}
+  # -- default docker image name 
+  # name: 
   # repository: 
   # tag: 
   # pullPolicy: 
   # imagePullSecret: 
 
 defaultImage:
+  name: "magda-auth-google"
   repository: docker.io/data61
   pullPolicy: IfNotPresent
   imagePullSecret: false
