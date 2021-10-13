@@ -60,7 +60,7 @@ spec:
             secretKeyRef:
               name: auth-secrets
               key: session-secret
-{{ include "magda.db-client-credential-env" (dict "dbName" "session-db" "root" .) | indent 8 }}
+        {{- include "magda.db-client-credential-env" (dict "dbName" "session-db" "root" .) | indent 8 }}
         - name: GOOGLE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
