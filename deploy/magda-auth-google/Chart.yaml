@@ -7,5 +7,5 @@ home: "https://github.com/magda-io/magda-auth-google"
 sources: [ "https://github.com/magda-io/magda-auth-google" ]
 dependencies:
   - name: magda-common
-    version: "1.0.0-alpha.0"
+    version: "1.0.0-alpha.4"
     repository: "https://charts.magda.io"
