@@ -1,7 +1,7 @@
 apiVersion: v2
 name: magda-auth-google
 description: A Magda Authentication Plugin for Google
-version: "2.0.0"
+version: "2.0.0-alpha.0"
 kubeVersion: ">= 1.14.0-0"
 home: "https://github.com/magda-io/magda-auth-google"
 sources: [ "https://github.com/magda-io/magda-auth-google" ]
@@ -9,4 +9,3 @@ dependencies:
   - name: magda-common
     version: "2.1.1"
     repository: "oci://ghcr.io/magda-io/charts"
-
