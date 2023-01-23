@@ -1,6 +1,6 @@
 # magda-auth-google
 
-![Version: 1.2.3](https://img.shields.io/badge/Version-1.2.3-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square)
 
 A Magda Authentication Plugin for Google
 
