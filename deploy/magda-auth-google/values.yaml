@@ -9,6 +9,12 @@ global:
   rollingUpdate: {}
   externalUrl: ""
   authPluginRedirectUrl: "/sign-in-redirect"
+  # -- By default, at end of authentication process, an auth plugin will never redirect the user to an external domain, 
+  # even if `authPluginRedirectUrl` is configured to an URL with an external domain.
+  # Unless an external domain is added to the whitelist i.e. this `authPluginAllowedExternalRedirectDomains` config, 
+  # any auth plugins will always ignore the domain part of the url (if supplied) and only redirect the user to the URL path under the current domain.
+  # Please note: you add a url host string to this list. e.g. "abc.com:8080"
+  authPluginAllowedExternalRedirectDomains: []
 
 # -- the redirection url after the whole authentication process is completed.
 # Authentication Plugins will use this value as default.
@@ -60,3 +66,58 @@ resources:
     memory: 30Mi
   limits:
     cpu: 50m
+
+authPluginConfig:
+  # -- the unique key of the auth plugin. Allowed characters: [a-zA-Z0-9\-]
+  key: "google"
+  
+  # -- the display name of the auth plugin.
+  name: "Google"
+  
+  # -- the display icon URL of the auth plugin.
+  iconUrl: "/icon.svg"
+  
+  # -- The authentication method of the plugin. Support values are:
+  # <ul>
+  # <li>`IDP-URI-REDIRECTION`: the plugin will redirect user agent to idp (identity provider) for authentication. e.g. Google & fackebook oauth etc.</li>
+  # <li>`PASSWORD`: the plugin expect frontend do a form post that contains username & password to the plugin for authentication.</li>
+  # <li>`QR-CODE`: the plugin offers a url that is used by the frontend to request auth challenge data. The data will be encoded into a QR-code image and expect the user scan the QR code with a mobile app to complete the authentication request.</li>
+  # </ul>
+  # See [Authentication Plugin Specification](https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md) for more details
+  authenticationMethod: "IDP-URI-REDIRECTION"
+  
+  # -- Optional; Only applicable when authenticationMethod = "PASSWORD".
+  # If present, will displayed the heading underneath the login form to provide extra info to users. e.g. how to reset password
+  loginFormExtraInfoHeading: ""
+  
+  # -- Optional; Only applicable when authenticationMethod = "PASSWORD".
+  # If present, will displayed the content underneath the login form to provide extra info to users. e.g. how to reset password
+  # Can support content in markdown format.
+  loginFormExtraInfoContent: ""
+  
+  # -- Optional; Only applicable when authenticationMethod = "PASSWORD".
+  # @default -- "Username"
+  loginFormUsernameFieldLabel: ""
+
+  # -- Optional; Only applicable when authenticationMethod = "PASSWORD".
+  # @default -- "Password"
+  loginFormPasswordFieldLabel: ""
+
+  # -- Only applicable & compulsory when authenticationMethod = "QR-CODE".
+  # The url that is used by frontend client to request auth challenge data from the authentication plugin.
+  # See [Authentication Plugin Specification](https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md) for more details
+  qrCodeImgDataRequestUrl: ""
+
+  # -- Only applicable & compulsory when authenticationMethod = "QR-CODE".
+  # The url that is used by frontend to poll the authentication processing result.
+  # See [Authentication Plugin Specification](https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md) for more details
+  qrCodeAuthResultPollUrl: ""
+
+  # -- Only applicable & compulsory when authenticationMethod = "QR-CODE".
+  # If present, will displayed the heading underneath the QR Code image to provide extra instruction to users. e.g. how to download moile app to scan the QR Code
+  qrCodeExtraInfoHeading: ""
+
+  # -- Only applicable & compulsory when authenticationMethod = "QR-CODE".
+  # If present, will displayed the content underneath the login form to provide extra info to users. e.g. how to download moile app to scan the QR Code.
+  # Can support content in markdown format.
+  qrCodeExtraInfoContent: ""

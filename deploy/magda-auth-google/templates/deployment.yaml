@@ -3,7 +3,9 @@ kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
 spec:
+  {{- if not .Values.autoscaler.enabled }}
   replicas: {{ .Values.replicas | default 1 }}
+  {{- end }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -13,6 +15,9 @@ spec:
       service: {{ .Chart.Name }}
   template:
     metadata:
+      annotations:
+        checksum/authPluginConfig: {{ .Values.authPluginConfig | mustToRawJson | sha256sum }}
+        checksum/allowedExternalRedirectDomains: {{ .Values.global.authPluginAllowedExternalRedirectDomains | mustToRawJson | sha256sum }}
       labels:
         service: {{ .Chart.Name }}
     spec:
@@ -31,11 +36,15 @@ spec:
             "--externalUrl", {{ .Values.global.externalUrl | quote }},
             "--authPluginRedirectUrl", {{ .Values.authPluginRedirectUrl | default .Values.global.authPluginRedirectUrl | quote }},
             "--authApiUrl", "http://authorization-api/v0",
+            "--authPluginConfigJson", "/etc/{{ .Chart.Name }}-config/authPluginConfig.json",
+            "--allowedExternalRedirectDomainsConfigJson", "/etc/{{ .Chart.Name }}-config/allowedExternalRedirectDomains.json",
             "--googleClientId", {{ .Values.googleClientId | quote }}
         ]
         volumeMounts:
           - name: gateway-config
             mountPath: /etc/gateway-config
+          - name: "{{ .Chart.Name }}-config"
+            mountPath: "/etc/{{ .Chart.Name }}-config"
 {{- if .Values.global.enableLivenessProbes }}
         livenessProbe:
           httpGet:
@@ -71,3 +80,6 @@ spec:
         - name: gateway-config
           configMap:
             name: gateway-config
+        - name: "{{ .Chart.Name }}-config"
+          configMap:
+            name: "{{ .Chart.Name }}-config"

@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Authenticator, Profile } from "passport";
 import { default as ApiClient } from "@magda/auth-api-client";
+import urijs from "urijs";
 import {
     createOrGetUserToken,
     getAbsoluteUrl,
@@ -15,7 +16,27 @@ export interface GoogleOptions {
     clientId: string;
     clientSecret: string;
     externalUrl: string;
+    allowedExternalRedirectDomains: string[];
     authPluginRedirectUrl: string;
+}
+
+function normalizeRedirectionUrl(
+    url: string,
+    allowedExternalRedirectDomains?: string[]
+) {
+    if (!url) {
+        return "/";
+    }
+    const allowedDomains = allowedExternalRedirectDomains?.length
+        ? allowedExternalRedirectDomains
+        : [];
+    const redirectUri = urijs(url);
+    const host = redirectUri.host();
+    if (!host || allowedDomains.indexOf(host) === -1) {
+        return redirectUri.resource();
+    } else {
+        return redirectUri.toString();
+    }
 }
 
 export default function google(options: GoogleOptions): Router {
@@ -29,6 +50,8 @@ export default function google(options: GoogleOptions): Router {
         options.authPluginRedirectUrl,
         externalUrl
     );
+    const allowedExternalRedirectDomains =
+        options.allowedExternalRedirectDomains;
 
     if (!clientId) {
         throw new Error("Google client id can't be empty!");
@@ -87,7 +110,14 @@ export default function google(options: GoogleOptions): Router {
             res: express.Response,
             next: express.NextFunction
         ) => {
-            redirectOnSuccess(req.query.state as string, req, res);
+            redirectOnSuccess(
+                normalizeRedirectionUrl(
+                    req.query.state as string,
+                    allowedExternalRedirectDomains
+                ),
+                req,
+                res
+            );
         },
         (
             err: any,
@@ -95,7 +125,15 @@ export default function google(options: GoogleOptions): Router {
             res: express.Response,
             next: express.NextFunction
         ): any => {
-            redirectOnError(err, req.query.state as string, req, res);
+            redirectOnError(
+                err,
+                normalizeRedirectionUrl(
+                    req.query.state as string,
+                    allowedExternalRedirectDomains
+                ),
+                req,
+                res
+            );
         }
     );
 
