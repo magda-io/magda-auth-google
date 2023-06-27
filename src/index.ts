@@ -29,6 +29,13 @@ const argv = yargs
         type: "string",
         default: "http://localhost:6100"
     })
+    .option("authPluginConfigJson", {
+        describe:
+            "Auth Plugin Config" +
+            "See https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md.",
+        type: "string",
+        coerce: coerceJson
+    })
     .option("allowedExternalRedirectDomainsConfigJson", {
         describe:
             "allowedExternalRedirectDomains" +
