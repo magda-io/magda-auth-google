@@ -1,3 +1,9 @@
+# 2.0.1
+
+-   add support to allowedExternalRedirectDomains config options
+-   deployment auto roll based on config
+-   not set deployment replicas when autoscaler is on
+
 # 2.0.0
 
 -   Upgrade nodejs to version 14

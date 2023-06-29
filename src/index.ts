@@ -29,6 +29,20 @@ const argv = yargs
         type: "string",
         default: "http://localhost:6100"
     })
+    .option("authPluginConfigJson", {
+        describe:
+            "Auth Plugin Config" +
+            "See https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md.",
+        type: "string",
+        coerce: coerceJson
+    })
+    .option("allowedExternalRedirectDomainsConfigJson", {
+        describe:
+            "allowedExternalRedirectDomains" +
+            "See https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md.",
+        type: "string",
+        coerce: coerceJson
+    })
     .option("dbHost", {
         describe: "The host running the session database.",
         type: "string",
@@ -89,6 +103,12 @@ const argv = yargs
         default: process.env.USER_ID || process.env.npm_package_config_userId
     }).argv;
 
+const authPluginConfig = argv.authPluginConfigJson as any as AuthPluginConfig;
+const allowedExternalRedirectDomains = argv
+    ?.allowedExternalRedirectDomainsConfigJson?.length
+    ? (argv.allowedExternalRedirectDomainsConfigJson as any as string[])
+    : ([] as string[]);
+
 // Create a new Express application.
 const app = express();
 
@@ -108,14 +128,7 @@ app.get("/icon.svg", (req, res) =>
  * response plugin config so other module knows how to interact with this plugin
  * See [authentication-plugin-spec.md](https://github.com/magda-io/magda/blob/master/docs/docs/authentication-plugin-spec.md)
  */
-app.get("/config", (req, res) =>
-    res.json({
-        key: "google",
-        name: "Google",
-        iconUrl: "/icon.svg",
-        authenticationMethod: "IDP-URI-REDIRECTION"
-    } as AuthPluginConfig)
-);
+app.get("/config", (req, res) => res.json(authPluginConfig));
 
 /**
  * Connect to magda session db & enable express session
@@ -161,7 +174,8 @@ app.use(
         clientId: argv.googleClientId,
         clientSecret: argv.googleClientSecret,
         externalUrl: argv.externalUrl,
-        authPluginRedirectUrl: argv.authPluginRedirectUrl
+        authPluginRedirectUrl: argv.authPluginRedirectUrl,
+        allowedExternalRedirectDomains
     })
 );
 
