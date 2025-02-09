@@ -8,6 +8,7 @@ import {
     createMagdaSessionRouter,
     AuthPluginConfig
 } from "@magda/authentication-plugin-sdk";
+import { __dirname } from "@magda/esm-utils";
 
 const coerceJson = (path?: string) => path && require(path);
 
@@ -123,7 +124,7 @@ app.get("/healthz", (req, res) => res.send("OK"));
  * a 36x36 size icon to be shown on frontend login page
  */
 app.get("/icon.svg", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "../assets/google-logo.svg"))
+    res.sendFile(path.resolve(__dirname(), "../assets/google-logo.svg"))
 );
 
 /**
