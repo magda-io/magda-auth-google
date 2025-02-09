@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 import google from "./google.js";
 import AuthApiClient, { UserToken } from "@magda/auth-api-client";
 import {
@@ -10,7 +11,7 @@ import {
 
 const coerceJson = (path?: string) => path && require(path);
 
-const argv = yargs
+const argv = yargs(hideBin(process.argv))
     .config()
     .help()
     .option("listenPort", {
@@ -101,7 +102,8 @@ const argv = yargs
             "The user id to use when making authenticated requests to the registry",
         type: "string",
         default: process.env.USER_ID || process.env.npm_package_config_userId
-    }).argv;
+    })
+    .parseSync();
 
 const authPluginConfig = argv.authPluginConfigJson as any as AuthPluginConfig;
 const allowedExternalRedirectDomains = argv
