@@ -1,6 +1,6 @@
 {
   "name": "magda-auth-google",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "A Magda Authentication Plugin for Google",
   "repository": "https://github.com/magda-io/magda-auth-google.git",
   "author": "Jacky Jiang <jacky.jiang@data61.csiro.au>",
