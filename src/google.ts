@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Authenticator, Profile } from "passport";
-import { default as ApiClient } from "@magda/auth-api-client";
+import ApiClient from "@magda/auth-api-client";
 import urijs from "urijs";
 import {
     createOrGetUserToken,
