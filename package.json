@@ -1,6 +1,6 @@
 {
   "name": "magda-auth-google",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-alpha.3",
   "description": "A Magda Authentication Plugin for Google",
   "repository": "https://github.com/magda-io/magda-auth-google.git",
   "author": "Jacky Jiang <jacky.jiang@data61.csiro.au>",
@@ -40,9 +40,9 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@magda/esm-utils": "^1.0.1",
     "@magda/auth-api-client": "^5.0.0-alpha.2",
     "@magda/authentication-plugin-sdk": "^5.0.0-alpha.2",
+    "@magda/esm-utils": "^1.0.1",
     "express": "^4.21.2",
     "lodash": "^4.17.21",
     "passport": "0.7.0",
