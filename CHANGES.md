@@ -2,13 +2,15 @@
 
 - Upgrade express to v4.21.2
 - Upgrade @magda/ci-utils to v1.0.5
-- Upgrade @magda/docker-utils to v5.0.0-alpha.1
-- Upgrade @magda/auth-api-client to v5.0.0-alpha.1
-- Upgrade @magda/authentication-plugin-sdk to v5.0.0-alpha.1
+- Upgrade @magda/docker-utils to v5.0.0
+- Upgrade @magda/auth-api-client to v5.0.0
+- Upgrade @magda/authentication-plugin-sdk to v5.0.0
 - Upgrade passport to 0.7.0
 - Upgrade yargs to 17.7.2 
 - Build as ESM module
 - Upgrade to Node 18
+- Code adjustment for yargs upgrade
+- fixes: Use __dirname from @magda/esm-utils
 
 # 2.0.1
 
