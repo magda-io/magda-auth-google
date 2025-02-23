@@ -122,15 +122,15 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.23.1.tgz#81fd50d11e2c32b2d6241470e3185b70c7b30699"
   integrity sha512-BHpFFeslkWrXWyUPnbKm+xYYVYruCinGcftSBaa8zoF9hZO4BcSCFUvHVTtzpIY6YzUnYtuEhZ+C9iEXjxnasg==
 
-"@magda/auth-api-client@^5.0.0-alpha.2":
-  version "5.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-5.0.0-alpha.2.tgz#df02ec6299995b624098148cca1ea09925d5bdd2"
-  integrity sha512-h3N58Wcz9x2Fh2ae5TpuKHthzmWo2IXa0lrFr3n9mUsB8SZnzSlOuCUush4YZftLzmXR7vvK+eA4kWB0ygXORA==
+"@magda/auth-api-client@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-5.0.0.tgz#72d0b805be723f82dc8defa125f9d6d3045ad1e6"
+  integrity sha512-ke1zI/Acc+AJ9vnKh6QRkChNHs0B0+5vF2txp/RgW1e/FDWO8vkurdNwBwmYyepOn8uMHySwBvQiBZfTLV+wCw==
 
-"@magda/authentication-plugin-sdk@^5.0.0-alpha.2":
-  version "5.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@magda/authentication-plugin-sdk/-/authentication-plugin-sdk-5.0.0-alpha.2.tgz#b1c4b2ed4c208dea1a0a32a33445ba9765e08e58"
-  integrity sha512-aSQ0wZKNCPH20l96YsYuzJul76r9Wet3jPwvDXslWrq7EWy3jDVwvb4ch8XTpAra4n38UL7B3mnKM80mEdO7OA==
+"@magda/authentication-plugin-sdk@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@magda/authentication-plugin-sdk/-/authentication-plugin-sdk-5.0.0.tgz#f00d142cef46a91971ef26ec0d2cb742d0195327"
+  integrity sha512-PQuRoNcnVWZcVf0Qswr9IcAICrTVakhaoOviVPISrcO/47ABkcJZunfwnTF+3lrIBXhZKcl/jHd7bC6vQtgL2A==
   dependencies:
     "@types/express" "^4.17.21"
     "@types/passport" "^1.0.3"
@@ -146,10 +146,10 @@
     recursive-readdir "^2.2.2"
     yaml "^1.10.2"
 
-"@magda/docker-utils@^5.0.0-alpha.2":
-  version "5.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@magda/docker-utils/-/docker-utils-5.0.0-alpha.2.tgz#3547612fabcc343fa3bb593c7524f56cedb947dc"
-  integrity sha512-Sn6D6C2vbKo91hol7am3nT5HbzQ2yLp7DmXfsZAAojonZND79WCOA0Hf2ytJ3+Bp8AZcmmRhKPsHpMlS0PYzCw==
+"@magda/docker-utils@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@magda/docker-utils/-/docker-utils-5.0.0.tgz#aa997b17baa9d885d04aee97a374c91430069021"
+  integrity sha512-QcftK3VcHnn24EF+U7ToWu/Vb1S6HFqrvKaXRmJZ1rBH6VxMocoCnsmfB0qyrYjhNpinavA3JjRQsWS5UsoSfQ==
   dependencies:
     fs-extra "^11.2.0"
     is-subdir "^1.0.2"
