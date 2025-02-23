@@ -12,7 +12,7 @@ To deploy the authentication plugin with your MAGDA instance, please check [MAGD
 1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
 ```yaml
 - name: magda-auth-google
-  version: "2.0.0" # or put the latest version number here
+  version: "3.0.0" # or put the latest version number here
   repository: "oci://ghcr.io/magda-io/charts"
 ```
 
