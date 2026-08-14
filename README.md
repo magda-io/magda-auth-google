@@ -4,15 +4,41 @@
 
 A Magda Authentication Plugin for Google
 
-Requires MAGDA version 0.0.58 or above.
+## Version Compatibility
+
+Pick the chart version that matches your Magda release:
+
+| This chart | Requires Magda | Notes |
+| ---------- | -------------- | ----- |
+| **`v4.x`** (from `v4.0.0-alpha.0`) | **v7.0.0 or above** | Connects to `session-db` over **TLS** when the database enforces SSL. Uses the versioned `magda.db-client-sslmode-env-v1` Helm helper contract (see below) and runs on **Node.js 22**. |
+| **`v3.x`** | **v6.x or below** (v0.0.58+) | Use this line if you run **Magda v6 or lower**. Does not emit `PGSSLMODE` and will not work against an SSL-enforced external database. |
+
+> ⚠️ **`v4.x` is a breaking change and requires Magda v7+.** Do **not** deploy `v4.x` alongside Magda v6 or lower — the `magda.db-client-sslmode-env-v1` contract is only provided by `magda-core` v7+, and rendering will fail closed with `no template "magda.compatibility-check" associated` (this is intentional; see [Magda Helm helper-contract compatibility check](#magda-helm-helper-contract-compatibility-check) below).
 
 To deploy the authentication plugin with your MAGDA instance, please check [MAGDA Gateway Helm Chart Document](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md).
+
+### Magda Helm helper-contract compatibility check
+
+From `v4.0.0`, this chart calls the versioned Helm helper contract `magda.db-client-sslmode-env-v1`, which is implemented by `magda-core` v7+ and delegates through a frozen `magda-common` shim. On render it performs a **compatibility handshake** with the installed Magda version so that a plugin built against a contract the installed Magda does not support fails **loudly at `helm template`/`helm install` time**, rather than silently connecting to PostgreSQL in plaintext. Full rationale, the failure matrix and the rules for changing a contract are documented here: [Magda Helm Helper Contracts](https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md).
+
+The handshake is controlled by the global value `global.magdaCompatibilityCheck` (default `true`):
+
+- **Leave it `true`** for normal deployments alongside Magda v7+.
+- **Set it to `false`** only when rendering this chart **standalone** (a `helm template` / `helm lint` with no `magda-core` in the release), otherwise the `magda.compatibility-check` template is undefined and the render fails:
+
+  ```bash
+  helm template ./deploy/magda-auth-google --set global.magdaCompatibilityCheck=false
+  ```
+
+  > Use **unquoted** `false`. Helm treats the string `"false"` as truthy, so `magdaCompatibilityCheck: "false"` silently leaves the check enabled.
 
 ### How to Use
 1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
 ```yaml
 - name: magda-auth-google
-  version: "3.0.0" # or put the latest version number here
+  # Magda v7+: use the latest v4.x (currently pre-release, since the official v4.0.0 ships after Magda v7.0.0).
+  # Magda v6 or lower: use the latest v3.x. See "Version Compatibility" above.
+  version: "4.0.0-alpha.0"
   repository: "oci://ghcr.io/magda-io/charts"
 ```
 
@@ -58,7 +84,7 @@ Kubernetes: `>= 1.14.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/magda-io/charts | magda-common | 2.1.1 |
+| oci://ghcr.io/magda-io/charts | magda-common | 7.0.0-alpha.0 |
 
 ## Values
 
@@ -85,8 +111,9 @@ Kubernetes: `>= 1.14.0-0`
 | defaultImage.imagePullSecret | bool | `false` |  |
 | defaultImage.pullPolicy | string | `"IfNotPresent"` |  |
 | defaultImage.repository | string | `"ghcr.io/magda-io"` |  |
-| global | object | `{"authPluginAllowedExternalRedirectDomains":[],"authPluginRedirectUrl":"/sign-in-redirect","externalUrl":"","image":{},"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
+| global | object | `{"authPluginAllowedExternalRedirectDomains":[],"authPluginRedirectUrl":"/sign-in-redirect","externalUrl":"","image":{},"magdaCompatibilityCheck":true,"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
 | global.authPluginAllowedExternalRedirectDomains | list | `[]` | By default, at end of authentication process, an auth plugin will never redirect the user to an external domain,  even if `authPluginRedirectUrl` is configured to an URL with an external domain. Unless an external domain is added to the whitelist i.e. this `authPluginAllowedExternalRedirectDomains` config,  any auth plugins will always ignore the domain part of the url (if supplied) and only redirect the user to the URL path under the current domain. Please note: you add a url host string to this list. e.g. "abc.com:8080" |
+| global.magdaCompatibilityCheck | bool | `true` | Whether to run the Magda Helm helper-contract compatibility check. Leave as `true` in normal deployments alongside Magda v7+. A standalone `helm template`/`helm lint` of this chart (no `magda-core` present) must set this to `false` (unquoted), otherwise the `magda.compatibility-check` template is undefined and the render fails. See https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md |
 | googleClientId | string | `nil` | Google Client Id. You **must** provide this value to make this plugin work Besides, this id. You also need to provide `googleClientSecret` via secret `oauth-secrets` (key: google-client-secret). You can use [Magda Create Secret Tool](https://www.npmjs.com/package/@magda/create-secrets) to create this secret. |
 | image.name | string | `"magda-auth-google"` |  |
 | replicas | int | `1` | no. of initial replicas |

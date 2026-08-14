@@ -16,7 +16,7 @@
     "test": "mocha",
     "docker-build-local": "create-docker-context-for-node-component --build --push --tag auto --local",
     "docker-build-prod": "create-docker-context-for-node-component --build --push --tag auto",
-    "helm-lint": "helm template deploy/magda-auth-google -f deploy/test-deploy.yaml 1>/dev/null",
+    "helm-lint": "helm template deploy/magda-auth-google -f deploy/test-deploy.yaml --set global.magdaCompatibilityCheck=false 1>/dev/null",
     "helm-docs": "docker run --rm -v \"$(pwd):/helm-docs\" -u $(id -u) jnorwood/helm-docs:v1.11.0 -t ./README.md.gotmpl -o ../../README.md",
     "update-all-charts": "helm dep up ./deploy/magda-auth-google",
     "add-all-chart-version-changes": "git ls-files -m | grep Chart.yaml | xargs git add && git ls-files -m | grep Chart.lock | xargs git add",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@magda/auth-api-client": "^5.0.0",
-    "@magda/authentication-plugin-sdk": "^5.0.0",
+    "@magda/authentication-plugin-sdk": "7.0.0-alpha.0",
     "@magda/esm-utils": "^1.0.1",
     "express": "^4.21.2",
     "lodash": "^4.17.21",
@@ -67,7 +67,7 @@
     ]
   },
   "engines": {
-    "node": ">=18.19.0"
+    "node": ">=22.0.0"
   },
   "husky": {
     "hooks": {
