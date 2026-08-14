@@ -16,8 +16,6 @@ Pick the chart version that matches your Magda release:
 | **`v3.x`** | **v6.x or below** (v0.0.58+) | Use this line if you run **Magda v6 or lower**. Does not emit `PGSSLMODE` and will not work against an SSL-enforced external database. |
 
 > ⚠️ **`v4.x` is a breaking change and requires Magda v7+.** Do **not** deploy `v4.x` alongside Magda v6 or lower — the `magda.db-client-sslmode-env-v1` contract is only provided by `magda-core` v7+, and rendering will fail closed with `no template "magda.compatibility-check" associated` (this is intentional; see [Magda Helm helper-contract compatibility check](#magda-helm-helper-contract-compatibility-check) below).
->
-> If you provide your own PostgreSQL account with a **non-default** privileged username, a self-managed `existingSecret` must also carry the `postgresql-postgres-password` key, otherwise the database pod fails with `CreateContainerConfigError`. `postgresqlUsername` cannot be changed after the database's first boot.
 
 To deploy the authentication plugin with your MAGDA instance, please check [MAGDA Gateway Helm Chart Document](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md).
 
