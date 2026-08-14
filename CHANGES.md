@@ -1,3 +1,11 @@
+# 4.0.0
+
+- Enforce TLS on the `session-db` connection when deployed against an enforced-SSL database (magda-io/magda#3742):
+  - Upgrade `@magda/authentication-plugin-sdk` to v7 (`7.0.0-alpha.0`), which derives the `node-postgres` `ssl` option from `PGSSLMODE`/`PGSSLROOTCERT` explicitly (fixes `SELF_SIGNED_CERT_IN_CHAIN` against Magda's self-signed server cert).
+  - Upgrade the `magda-common` Helm chart dependency to `7.0.0-alpha.0` and include the `magda.db-client-sslmode-env-v1` helper contract so the pod receives `PGSSLMODE` for the `session-db` client connection.
+  - Add `global.magdaCompatibilityCheck` (default `true`). Standalone `helm template`/`helm lint` (no `magda-core` present) must set it to `false`; the `helm-lint` script now does so.
+- **Requires Magda v7+.** This is a breaking change: with a non-default privileged PostgreSQL username, a self-managed `existingSecret` must also carry `postgresql-postgres-password`, otherwise the database pod fails with `CreateContainerConfigError`. `postgresqlUsername` cannot be changed after the database's first boot.
+
 # 3.0.0
 
 - Upgrade express to v4.21.2

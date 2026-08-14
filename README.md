@@ -12,7 +12,7 @@ To deploy the authentication plugin with your MAGDA instance, please check [MAGD
 1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
 ```yaml
 - name: magda-auth-google
-  version: "3.0.0" # or put the latest version number here
+  version: "2.0.0" # or put the latest version number here
   repository: "oci://ghcr.io/magda-io/charts"
 ```
 
@@ -58,7 +58,7 @@ Kubernetes: `>= 1.14.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/magda-io/charts | magda-common | 2.1.1 |
+| oci://ghcr.io/magda-io/charts | magda-common | 7.0.0-alpha.0 |
 
 ## Values
 
@@ -85,8 +85,9 @@ Kubernetes: `>= 1.14.0-0`
 | defaultImage.imagePullSecret | bool | `false` |  |
 | defaultImage.pullPolicy | string | `"IfNotPresent"` |  |
 | defaultImage.repository | string | `"ghcr.io/magda-io"` |  |
-| global | object | `{"authPluginAllowedExternalRedirectDomains":[],"authPluginRedirectUrl":"/sign-in-redirect","externalUrl":"","image":{},"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
+| global | object | `{"authPluginAllowedExternalRedirectDomains":[],"authPluginRedirectUrl":"/sign-in-redirect","externalUrl":"","image":{},"magdaCompatibilityCheck":true,"rollingUpdate":{}}` | only for providing appropriate default value for helm lint |
 | global.authPluginAllowedExternalRedirectDomains | list | `[]` | By default, at end of authentication process, an auth plugin will never redirect the user to an external domain,  even if `authPluginRedirectUrl` is configured to an URL with an external domain. Unless an external domain is added to the whitelist i.e. this `authPluginAllowedExternalRedirectDomains` config,  any auth plugins will always ignore the domain part of the url (if supplied) and only redirect the user to the URL path under the current domain. Please note: you add a url host string to this list. e.g. "abc.com:8080" |
+| global.magdaCompatibilityCheck | bool | `true` | Whether to run the Magda Helm helper-contract compatibility check. Leave as `true` in normal deployments alongside Magda v7+. A standalone `helm template`/`helm lint` of this chart (no `magda-core` present) must set this to `false` (unquoted), otherwise the `magda.compatibility-check` template is undefined and the render fails. See https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md |
 | googleClientId | string | `nil` | Google Client Id. You **must** provide this value to make this plugin work Besides, this id. You also need to provide `googleClientSecret` via secret `oauth-secrets` (key: google-client-secret). You can use [Magda Create Secret Tool](https://www.npmjs.com/package/@magda/create-secrets) to create this secret. |
 | image.name | string | `"magda-auth-google"` |  |
 | replicas | int | `1` | no. of initial replicas |

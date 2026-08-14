@@ -5,6 +5,13 @@ googleClientId:
 
 # -- only for providing appropriate default value for helm lint
 global:
+  # -- Whether to run the Magda Helm helper-contract compatibility check.
+  # Leave as `true` in normal deployments alongside Magda v7+.
+  # A standalone `helm template`/`helm lint` of this chart (no `magda-core` present)
+  # must set this to `false` (unquoted), otherwise the `magda.compatibility-check`
+  # template is undefined and the render fails.
+  # See https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md
+  magdaCompatibilityCheck: true
   image: {}
   rollingUpdate: {}
   externalUrl: ""
