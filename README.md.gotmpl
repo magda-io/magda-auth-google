@@ -38,8 +38,9 @@ The handshake is controlled by the global value `global.magdaCompatibilityCheck`
 1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
 ```yaml
 - name: magda-auth-google
-  # Magda v7+: use the latest v4.x. Magda v6 or lower: use the latest v3.x. See "Version Compatibility" above.
-  version: "4.0.0"
+  # Magda v7+: use the latest v4.x (currently pre-release, since the official v4.0.0 ships after Magda v7.0.0).
+  # Magda v6 or lower: use the latest v3.x. See "Version Compatibility" above.
+  version: "4.0.0-alpha.0"
   repository: "oci://ghcr.io/magda-io/charts"
 ```
 
