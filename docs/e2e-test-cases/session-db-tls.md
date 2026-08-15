@@ -172,9 +172,41 @@ Expected (a `session`/`client` row, `ssl = t`, with a TLS version):
 session|client|10.244.3.71|t|TLSv1.3|idle
 ```
 
-**Deterministic variant** — reproduce the SDK's `require`-mode connection from
-inside the plugin pod using the pod's real env, and read TLS state off your own
-backend:
+**Deterministic variant (exercises the real SDK code)** — this plugin has no
+local-password login and no real Google credentials, so instead of a browser
+login drive **the SDK's own session store** (`createMagdaSessionRouter`, which
+builds its pool via the SDK's `createPool`) to persist a session. A successful
+write proves the SDK connected and ran a real `INSERT` over TLS — the exact code
+path a real login uses:
+
+```bash
+DBPOD=$(kubectl get pod -n magda -l app.kubernetes.io/name=combined-db-postgresql-pg17 -o name | head -1)
+before=$(kubectl exec -n magda "$DBPOD" -c postgresql -- bash -c \
+  'PGPASSWORD=$(cat $POSTGRES_PASSWORD_FILE) psql -U postgres -d session -tAc "SELECT count(*) FROM session;"')
+
+kubectl exec -n magda deploy/magda-auth-google -- node --input-type=module -e '
+import express from "express";
+import http from "http";
+import { createMagdaSessionRouter } from "@magda/authentication-plugin-sdk";
+const app = express();
+app.use(createMagdaSessionRouter({ sessionSecret:"e2e", sessionDBHost:"session-db", sessionDBPort:5432 }));
+app.get("/w", (req,res) => { req.session.e2e = "req-"+Date.now(); res.end("ok"); });
+const server = app.listen(0, () => {
+  const port = server.address().port;
+  http.get("http://127.0.0.1:"+port+"/w", r => { r.on("data",()=>{}); r.on("end",
+    () => setTimeout(() => { console.log("SDK session write issued (status "+r.statusCode+")"); server.close(); process.exit(0); }, 2000));
+  }).on("error", e => { console.error("HTTP err", e.message); process.exit(1); });
+});'
+
+after=$(kubectl exec -n magda "$DBPOD" -c postgresql -- bash -c \
+  'PGPASSWORD=$(cat $POSTGRES_PASSWORD_FILE) psql -U postgres -d session -tAc "SELECT count(*) FROM session;"')
+echo "session rows: $before -> $after"
+```
+
+Expected: `SDK session write issued (status 200)` and the session count
+**increases by one** — the write went through the SDK's own pool. (The raw
+`pg_stat_ssl` variant below is a lower-level sanity check that reads TLS state
+off a backend directly.)
 
 ```bash
 kubectl exec -n magda deploy/magda-auth-google -- node --input-type=module -e '

@@ -127,10 +127,10 @@
   resolved "https://registry.yarnpkg.com/@magda/auth-api-client/-/auth-api-client-5.0.0.tgz#72d0b805be723f82dc8defa125f9d6d3045ad1e6"
   integrity sha512-ke1zI/Acc+AJ9vnKh6QRkChNHs0B0+5vF2txp/RgW1e/FDWO8vkurdNwBwmYyepOn8uMHySwBvQiBZfTLV+wCw==
 
-"@magda/authentication-plugin-sdk@7.0.0-alpha.0":
-  version "7.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@magda/authentication-plugin-sdk/-/authentication-plugin-sdk-7.0.0-alpha.0.tgz#8c1704662108f88a2c5e19dd25ed9623c8d9917a"
-  integrity sha512-fL9zdTBkirVLx8Fz9g9AbERyG6LNrVcWhsryCrvO3YdjdY3WhYfmmjT4k/9rZCX7j7lsVFK6gZNJTCbi5/KtmA==
+"@magda/authentication-plugin-sdk@7.0.0-alpha.1":
+  version "7.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@magda/authentication-plugin-sdk/-/authentication-plugin-sdk-7.0.0-alpha.1.tgz#5b4ae6b1ee5f6ee9e85b09a0c0579a49d42c4553"
+  integrity sha512-3hB1qWgRaBw24jgbzg55uwWcJK7MOMCVgnyiMcP1vmqs7uTNWLFxrzWPj9ceOh8HJv0/AAjxH1C9sSHmQMdnYA==
   dependencies:
     "@types/express" "^4.17.21"
     "@types/passport" "^1.0.3"

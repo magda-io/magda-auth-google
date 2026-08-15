@@ -10,27 +10,12 @@ Pick the chart version that matches your Magda release:
 
 | This chart | Requires Magda | Notes |
 | ---------- | -------------- | ----- |
-| **`v4.x`** (from `v4.0.0-alpha.0`) | **v7.0.0 or above** | Connects to `session-db` over **TLS** when the database enforces SSL. Uses the versioned `magda.db-client-sslmode-env-v1` Helm helper contract (see below) and runs on **Node.js 22**. |
+| **`v4.x`** (from `v4.0.0-alpha.0`) | **v7.0.0 or above** | Connects to `session-db` over **TLS** when the database enforces SSL. Uses the versioned `magda.db-client-sslmode-env-v1` Helm helper contract plus `magda.db-client-ca-env-v1` for `sslmode: verify-ca`/`verify-full` server-certificate verification (needs `magda-core` `>= 7.0.0-alpha.1`), and runs on **Node.js 22**. |
 | **`v3.x`** | **v6.x or below** (v0.0.58+) | Use this line if you run **Magda v6 or lower**. Does not emit `PGSSLMODE` and will not work against an SSL-enforced external database. |
 
-> ⚠️ **`v4.x` is a breaking change and requires Magda v7+.** Do **not** deploy `v4.x` alongside Magda v6 or lower — the `magda.db-client-sslmode-env-v1` contract is only provided by `magda-core` v7+, and rendering will fail closed with `no template "magda.compatibility-check" associated` (this is intentional; see [Magda Helm helper-contract compatibility check](#magda-helm-helper-contract-compatibility-check) below).
+> ⚠️ **`v4.x` is a breaking change and requires Magda v7+** (on the v7 pre-release line, **`>= 7.0.0-alpha.1`**, which first shipped the `db-client-ca-env-v1` contract this chart now calls). Do **not** deploy `v4.x` alongside Magda v6 or lower, or an earlier v7 alpha — the required helper contracts are only provided by a recent enough `magda-core`, and rendering will fail closed with `no template "magda.compatibility-check" associated` or a contract-not-supported error (this is intentional — the render-time compatibility handshake is controlled by `global.magdaCompatibilityCheck`, default `true`; see the [Magda Helm Helper Contracts](https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md) documentation).
 
 To deploy the authentication plugin with your MAGDA instance, please check [MAGDA Gateway Helm Chart Document](https://github.com/magda-io/magda/blob/master/deploy/helm/internal-charts/gateway/README.md).
-
-### Magda Helm helper-contract compatibility check
-
-From `v4.0.0`, this chart calls the versioned Helm helper contract `magda.db-client-sslmode-env-v1`, which is implemented by `magda-core` v7+ and delegates through a frozen `magda-common` shim. On render it performs a **compatibility handshake** with the installed Magda version so that a plugin built against a contract the installed Magda does not support fails **loudly at `helm template`/`helm install` time**, rather than silently connecting to PostgreSQL in plaintext. Full rationale, the failure matrix and the rules for changing a contract are documented here: [Magda Helm Helper Contracts](https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md).
-
-The handshake is controlled by the global value `global.magdaCompatibilityCheck` (default `true`):
-
-- **Leave it `true`** for normal deployments alongside Magda v7+.
-- **Set it to `false`** only when rendering this chart **standalone** (a `helm template` / `helm lint` with no `magda-core` in the release), otherwise the `magda.compatibility-check` template is undefined and the render fails:
-
-  ```bash
-  helm template ./deploy/magda-auth-google --set global.magdaCompatibilityCheck=false
-  ```
-
-  > Use **unquoted** `false`. Helm treats the string `"false"` as truthy, so `magdaCompatibilityCheck: "false"` silently leaves the check enabled.
 
 ### How to Use
 1. Add the auth plugin as a [Helm Chart Dependency](https://helm.sh/docs/helm/helm_dependency/)
@@ -84,7 +69,7 @@ Kubernetes: `>= 1.14.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/magda-io/charts | magda-common | 7.0.0-alpha.0 |
+| oci://ghcr.io/magda-io/charts | magda-common | 7.0.0-alpha.1 |
 
 ## Values
 

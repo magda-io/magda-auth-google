@@ -1,11 +1,12 @@
 # 4.0.0
 
 - Enforce TLS on the `session-db` connection when deployed against an enforced-SSL database (magda-io/magda#3742):
-  - Upgrade `@magda/authentication-plugin-sdk` to v7 (`7.0.0-alpha.0`), which derives the `node-postgres` `ssl` option from `PGSSLMODE`/`PGSSLROOTCERT` explicitly (fixes `SELF_SIGNED_CERT_IN_CHAIN` against Magda's self-signed server cert).
-  - Upgrade the `magda-common` Helm chart dependency to `7.0.0-alpha.0` and include the `magda.db-client-sslmode-env-v1` helper contract so the pod receives `PGSSLMODE` for the `session-db` client connection.
+  - Upgrade `@magda/authentication-plugin-sdk` to v7 (`7.0.0-alpha.1`), which derives the `node-postgres` `ssl` option from `PGSSLMODE`/`PGSSLROOTCERT` explicitly (fixes `SELF_SIGNED_CERT_IN_CHAIN` against Magda's self-signed server cert).
+  - Upgrade the `magda-common` Helm chart dependency to `7.0.0-alpha.1` and include the `magda.db-client-sslmode-env-v1` helper contract so the pod receives `PGSSLMODE` for the `session-db` client connection.
   - Add `global.magdaCompatibilityCheck` (default `true`). Standalone `helm template`/`helm lint` (no `magda-core` present) must set it to `false`; the `helm-lint` script now does so.
+  - Support `sslmode: verify-ca`/`verify-full` (server-certificate verification): the chart now adopts the `magda.db-client-ca-env-v1` helper contract, mounting the PostgreSQL server CA and setting `PGSSLROOTCERT` so the `session-db` connection can verify the server certificate. Under `disable`/`require` these render nothing (self-guarded). Requires `magda-core` `>= 7.0.0-alpha.1`.
 - Upgrade to Node.js 22 (`engines`, CI workflows and the Docker base image), required by the v7 `@magda/authentication-plugin-sdk`.
-- **Requires Magda v7+** (breaking change). Deploying against Magda v6 or lower fails the `magda.compatibility-check` handshake at render time; stay on the `3.x` line for those.
+- **Requires Magda v7+** (breaking change; on the v7 pre-release line, `>= 7.0.0-alpha.1`, which first ships the `db-client-ca-env-v1` contract this chart now calls). Deploying against an unsupported Magda fails the `magda.compatibility-check` handshake at render time; stay on the `3.x` line for Magda v6 or lower.
 
 # 3.0.0
 
