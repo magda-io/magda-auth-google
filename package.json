@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@magda/auth-api-client": "^5.0.0",
-    "@magda/authentication-plugin-sdk": "7.0.0-alpha.0",
+    "@magda/authentication-plugin-sdk": "7.0.0-alpha.1",
     "@magda/esm-utils": "^1.0.1",
     "express": "^4.21.2",
     "lodash": "^4.17.21",

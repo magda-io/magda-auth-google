@@ -7,3 +7,4 @@ a real cluster (e.g. minikube). Modelled on Magda's
 ## Cases
 
 - [session-db TLS connection (Magda v7)](./session-db-tls.md)
+- [`sslmode=verify-full` server-certificate verification (Magda v7)](./verify-full-ca.md)
