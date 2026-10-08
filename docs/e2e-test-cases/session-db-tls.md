@@ -6,7 +6,7 @@ to `session-db` **over TLS** when deployed alongside **Magda v7**, and that
 session-db access still works — run against a real cluster (e.g. minikube).
 
 This is the plugin-side counterpart to Magda's own
-[DB TLS + non-default privileged user](https://github.com/magda-io/magda/blob/next/docs/docs/e2e-test-cases/db-tls-and-privileged-user.md)
+[DB TLS + non-default privileged user](https://github.com/magda-io/magda/blob/main/docs/docs/e2e-test-cases/db-tls-and-privileged-user.md)
 case: that one covers `magda-core`'s own services; auth plugins are separate
 charts and are not exercised by it.
 
@@ -46,7 +46,7 @@ a chart **dependency**, not as a separate `helm install`. Installed as its own
 release with the check enabled, the render fails with
 `no template "magda.compatibility-check" associated` (this is the contract
 failing closed, by design — see
-[Magda Helm Helper Contracts](https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md)).
+[Magda Helm Helper Contracts](https://github.com/magda-io/magda/blob/main/docs/docs/helm-helper-contracts.md)).
 
 This case therefore deploys via a small **umbrella chart** that depends on both
 `magda` and this plugin.
@@ -55,7 +55,7 @@ This case therefore deploys via a small **umbrella chart** that depends on both
 
 Build the plugin's PR / release artifacts first (the deploy uses the published
 chart + image, not a local checkout) — see
-[How to Release a New Version](https://github.com/magda-io/magda/blob/next/docs/docs/ci-version-release.md).
+[How to Release a New Version](https://github.com/magda-io/magda/blob/main/docs/docs/ci-version-release.md).
 Substitute the version you built for `<PLUGIN_VERSION>` (e.g. `4.0.0-pr.9.0`)
 and the Magda v7 release for `<MAGDA_VERSION>` (e.g. `7.0.0-alpha.0`) below.
 

@@ -10,7 +10,7 @@ global:
   # A standalone `helm template`/`helm lint` of this chart (no `magda-core` present)
   # must set this to `false` (unquoted), otherwise the `magda.compatibility-check`
   # template is undefined and the render fails.
-  # See https://github.com/magda-io/magda/blob/next/docs/docs/helm-helper-contracts.md
+  # See https://github.com/magda-io/magda/blob/main/docs/docs/helm-helper-contracts.md
   magdaCompatibilityCheck: true
   image: {}
   rollingUpdate: {}
